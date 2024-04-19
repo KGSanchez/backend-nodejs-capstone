@@ -51,7 +51,7 @@ router.post('/register', async (req, res) => {
         logger.info('User registered succesfully');
 
         // Task 8: Return the user email and the token as a JSON
-        res.json({ authToken, email})
+        return res.json({ authToken, email})
     } catch (e) {
          return res.status(500).send('Internal server error');
     }
@@ -76,20 +76,19 @@ router.post('/login', async (req, res) => {
                 logger.error('Password do not match');
                 return res.json(404).json({ error: 'Wrong password' });
             }
-
-            // Task 5: Fetch user details from a database
-            const { userName, userEmail } = theUser;
+            const userName = theUser.firstName;
+            const userEmail = theUser.email;
 
             let payload = {
                 user: {
-                    id: theUser._id.toString()
+                    id: theUser._id.toString(),
                 }
             };
 
             // Task 6: Create JWT authentication if passwords match with user._id as payload
             const authToken = jwt.sign(payload, JWT_SECRET);
 
-            res.json({authToken, userName, userEmail });
+            return res.json({authToken, userName, userEmail });
         } else {
             // Task 7: Send appropriate message if the user is not found
             logger.error('User not found');

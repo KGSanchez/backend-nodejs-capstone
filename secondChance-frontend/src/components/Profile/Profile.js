@@ -13,8 +13,8 @@ const Profile = () => {
  const [editMode, setEditMode] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    const authtoken = sessionStorage.getItem("auth-token");
-    if (!authtoken) {
+    const authToken = sessionStorage.getItem("auth-token");
+    if (!authToken) {
       navigate("/app/login");
     } else {
       fetchUserProfile();
@@ -23,10 +23,10 @@ const Profile = () => {
 
   const fetchUserProfile = async () => {
     try {
-      const authtoken = sessionStorage.getItem("auth-token");
+      const authToken = sessionStorage.getItem("auth-token");
       const email = sessionStorage.getItem("email"); // Get the email from session storage
       const name=sessionStorage.getItem('name');
-      if (name || authtoken) {
+      if (name || authToken) {
                 const storedUserDetails = {
                   name: name,
                   email:email
@@ -55,10 +55,10 @@ const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
-    const authtoken = sessionStorage.getItem("auth-token");
+    const authToken = sessionStorage.getItem("auth-token");
     const email = sessionStorage.getItem("email"); // Get the email from session storage
 
-    if (!authtoken || !email) {
+    if (!authToken || !email) {
       navigate("/app/login");
       return;
     }
@@ -67,7 +67,7 @@ const handleSubmit = async (e) => {
     const response = await fetch(`${urlConfig.backendUrl}/api/auth/update`, {
       method: "PUT",
       headers: {
-        "Authorization": `Bearer ${authtoken}`,
+        "Authorization": `Bearer ${authToken}`,
         "Content-Type": "application/json",
         "Email": email,
       },

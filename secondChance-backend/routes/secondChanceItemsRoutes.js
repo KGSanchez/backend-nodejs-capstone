@@ -67,12 +67,8 @@ router.post('/', upload.single('file'), async(req, res,next) => {
         secondChanceItem.date_added = date_added;
 
         const insertResult = await collection.insertOne(secondChanceItem);
-
-        if (insertResult && insertResult.ops && insertResult.ops.length > 0) {
-            res.status(201).json(insertResult.ops[0]);
-        } else {
-            throw new Error('Insert operation did not return any documents');
-        }
+        res.status(201).json(insertResult);
+        
     } catch (e) {
         next(e);
     }
@@ -88,7 +84,7 @@ router.get('/:id', async (req, res, next) => {
         const collection = db.collection('secondChanceItems');
 
         //Step 4: task 3 - insert code here
-        const id = req.body.id;
+        const id = req.params.id;
         const secondChanceItem = await collection.findOne({ id: id });
         //Step 4: task 4 - insert code here
 
